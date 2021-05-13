@@ -8,7 +8,9 @@ import csv
 wordlist = []
 wordsToRemove = []
 
-filename = "Documents/PythonCode/ActiveWL_4-29-21.csv"
+filename = "Documents/PythonCode/AdamsCrosswordPrograms/ActiveWL_4-29-21.csv"
+newFilename = "Documents/PythonCode/AdamsCrosswordPrograms/ActiveWL_new.csv"
+
 
 # Import the file
 with open(filename, 'r') as csvfile:
@@ -30,8 +32,23 @@ for pairIndex in range(0, len(wordlist)):
             currentScore = wordlist[crossIndex][1]
             if(targetWord == currentWord and currentScore == 50):
                 wordsToRemove.append(wordlist[crossIndex])
+                break
             elif(max(targetWord, currentWord) == currentWord):
                 break
+
+wordsToWrite = []
+nextIndex = 0
+for pair in wordlist:
+    if(nextIndex < len(wordsToRemove)):
+        if(pair[0] != wordsToRemove[nextIndex][0]):
+            wordsToWrite.append(pair)
+        else:
+            nextIndex+=1
+
+with open(newFilename, 'w') as csvfile:
+    csvwriter = csv.writer(csvfile)
+    csvwriter.writerows(wordsToWrite)
+
 i = 1
 for word in wordsToRemove:
     if(i % 10 == 0):
